@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    private var brain = CalculatorBrain()
+    
     var userIsInTheMiddleOfTyping = false
     
     var displayValue: Double {
@@ -39,17 +41,17 @@ class ViewController: UIViewController {
     
     @IBAction func performOperation(_ sender: UIButton) {
         
-        userIsInTheMiddleOfTyping = false
+        if userIsInTheMiddleOfTyping {
+            brain.setOperand(displayValue)
+            userIsInTheMiddleOfTyping = false
+        }
         
         if let mathematicsSymbol = sender.currentTitle {
-            switch mathematicsSymbol {
-            case "π":
-                displayValue = Double.pi
-            case "√":
-                displayValue = sqrt(displayValue)
-            default:
-                break
-            }
+            brain.performOperation(mathematicsSymbol)
+        }
+        
+        if let result = brain.result {
+            displayValue = result
         }
     }
     
